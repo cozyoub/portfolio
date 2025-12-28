@@ -63,36 +63,35 @@
   });
 
   // 프로젝트 호버시 마우스 이미지 변경
-  let cursorImgBox = document.querySelector(".cursor .img-box");
-  let workLinks = document.querySelectorAll(".product__list li a");
+const cursorImgBox = document.querySelector(".cursor .img-box");
+const workLinks = document.querySelectorAll(".product__list li a");
+const allImgs = document.querySelectorAll(".cursor .img-box .image");
 
-  // 커서 이동시 이미지박스 함께 이동
-  document.addEventListener("mousemove", (e) => {
-    cursorImgBox.style.top = `${e.clientY}px`;
-    cursorImgBox.style.left = `${e.clientX}px`;
-    cursorImgBox.animate(
-      {
-        top: `${e.clientY}px`,
-        left: `${e.clientX}px`,
-      },
-      2000
-    );
+document.addEventListener("mousemove", (e) => {
+  cursorImgBox.style.top = `${e.clientY}px`;
+  cursorImgBox.style.left = `${e.clientX}px`;
+});
+
+workLinks.forEach((a) => {
+  const selector = a.getAttribute("data-img"); // "#img3"
+  const cursorImg = selector ? document.querySelector(selector) : null;
+
+  a.addEventListener("mouseenter", () => {
+    cursorImgBox.classList.add("on");
+
+    // 이전 이미지 on 제거
+    allImgs.forEach((img) => img.classList.remove("on"));
+
+    // 현재 이미지 on
+    if (cursorImg) cursorImg.classList.add("on");
   });
 
-  workLinks.forEach((i) => {
-    const target = i;
-    imageUrl = target.getAttribute("data-img");
-    let cursorImg = document.querySelector(`${imageUrl}`);
-
-    i.addEventListener("mouseover", () => {
-      cursorImgBox.classList.add("on");
-      cursorImg.classList.add("on");
-    });
-    i.addEventListener("mouseout", () => {
-      cursorImgBox.classList.remove("on");
-      cursorImg.classList.remove("on");
-    });
+  a.addEventListener("mouseleave", () => {
+    cursorImgBox.classList.remove("on");
+    if (cursorImg) cursorImg.classList.remove("on");
   });
+});
+
 })();
 
 const randomX = random(-400, 400);
